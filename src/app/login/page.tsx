@@ -3,37 +3,39 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { RegisterOptions } from "react-hook-form";
 
-const registerOptions: RegisterOptions = {
+const emailRegisterOptions: RegisterOptions<FormData, "email"> = {
   required: true,
 };
 
-const Signup = () => {
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>({
+interface FormData {
+  email: string;
+  password: string;
+}
+
+const Login = () => {
+  const { handleSubmit, register, reset } = useForm<FormData>({
     defaultValues: {
-      username: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: FormData) => {
     console.log(data);
     // find if user is declare show error
-    let alreadyUser = localStorage.getItem("signup-user");
-    if (alreadyUser) {
-      let alreadyUserData = JSON.parse(alreadyUser);
-      if (alreadyUserData.email === data.email) {
-        alert("Already User");
-        return;
+    const userData = localStorage.getItem("signup-user");
+    const parsedUserData = userData !== null ? JSON.parse(userData) : null;
+    if (parsedUserData) {
+      if (
+        parsedUserData?.email === data.email &&
+        parsedUserData?.password === data.password
+      ) {
+        alert("Login Success");
+      } else {
+        alert("Invalid User");
       }
     } else {
-      alert("signup successfully");
-      localStorage.setItem("signup-user", JSON.stringify(data));
+      alert("please create account");
     }
     reset();
   };
@@ -41,7 +43,7 @@ const Signup = () => {
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Sign Up to your account
+          Sign in
         </h2>
       </div>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -56,22 +58,6 @@ const Signup = () => {
               htmlFor="email"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
-              Name
-            </label>
-            <div className="mt-2">
-              <input
-                id="email"
-                autoComplete="email"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                {...register("username", registerOptions)}
-              />
-            </div>
-          </div>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
               Email address
             </label>
             <div className="mt-2">
@@ -81,7 +67,7 @@ const Signup = () => {
                 autoComplete="email"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                {...register("email", registerOptions)}
+                {...register("email", emailRegisterOptions)}
               />
             </div>
           </div>
@@ -109,7 +95,7 @@ const Signup = () => {
                 autoComplete="current-password"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                {...register("password", registerOptions)}
+                {...register("password", emailRegisterOptions)}
               />
             </div>
           </div>
@@ -122,18 +108,10 @@ const Signup = () => {
             </button>
           </div>
         </form>
-        <p className="mt-10 text-center text-sm text-gray-500">
-          Not a member?
-          <a
-            href="#"
-            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-          >
-            Start a 14 day free trial
-          </a>
-        </p>
+        <p className="mt-10 text-center text-sm text-gray-500">Not a member?</p>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default Login;
