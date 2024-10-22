@@ -36,7 +36,7 @@ const Dashboard = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    const user = localStorage.getItem("signup-user");
+    const user = localStorage.getItem("signup-user");  
     if (user) {
       if (editingTodo) {
         // Edit existing todo
