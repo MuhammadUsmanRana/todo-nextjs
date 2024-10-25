@@ -2,8 +2,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo, deleteTodo, editTodo } from "@/app/store/todoSlices";
-import store from "@/app/store/store";
+import { addTodo, deleteTodo, editTodo } from "@/components/store/todoSlices";
+import store from "@/components/store/store";
 import Image from "next/image";
 import sidebarImage from "@/app/fonts/sidebar.jpg";
 
